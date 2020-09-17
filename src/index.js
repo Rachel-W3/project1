@@ -16,13 +16,11 @@
 			
         ctx = canvas.getContext('2d');
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+        setupUI();
     }
     
     function setupUI(){
-
-    }
-
-    function update(){
-        
+        canvas.onclick = function(e){rwnsLIB.spawnRock(e, ctx, 20, 0)};
     }
 })();
