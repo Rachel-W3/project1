@@ -3,6 +3,7 @@
 (function(){
     let canvas;
     let ctx;
+    let rect;
     const canvasWidth = 640, canvasHeight = 480;
 
     window.onload = init;
@@ -11,6 +12,7 @@
         console.log("page loaded!");
 
         canvas = document.querySelector('canvas');
+        rect = canvas.getBoundingClientRect();
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
 			
@@ -21,6 +23,6 @@
     }
     
     function setupUI(){
-        canvas.onclick = function(e){rwnsLIB.spawnRock(e, ctx, 20, 0)};
+        canvas.onclick = function(e){rwnsLIB.spawnRock(e, ctx, rect, 20, 0)};
     }
 })();
