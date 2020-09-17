@@ -11,7 +11,7 @@
 
     // This will temporarily act as the fluid layer of the sandbox
     function drawSineWave(){
-
+        
     }
 
     function spawnRock(e, ctx, rect, radius, mass, color='red'){
@@ -23,6 +23,7 @@
                               color : color,
                               velocity : 0
                             };
+        
     }
 
     function drawRock(ctx){
@@ -40,12 +41,13 @@
     // Handles the physics of rocks and fluids (latter will be implemented later on)
     function dropRocks(){
         for(let i=0;i<rockCount;i++){
-            rocks[i].velocity += physicsParams.acceleration;
+            rocks[i].velocity += physicsParams.acceleration * (document.querySelector("#myGravity").value);
             if (rocks[i].velocity > physicsParams.maxVelocity) rocks[i].velocity = physicsParams.maxVelocity;
             rocks[i].y += rocks[i].velocity;
         }
     }
-
+    
+    
     window["rwnsLIB"] = {
         drawSineWave,
         spawnRock,

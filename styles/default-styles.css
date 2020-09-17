@@ -3,14 +3,19 @@
     padding: 0;
 }
 
-body{
-    font-family:sans-serif;
+body {
+    font-family: sans-serif;
+    background-color: rgba(245,253,254);
 }
 
-button,input{
-    font-size:1.2em;
+h1 {
+    padding: 2vw;
 }
 
-li{
-    margin-bottom:1em;
+button, input {
+    font-size: 1.2em;
+}
+
+li {
+    margin-bottom: 1em;
 }
