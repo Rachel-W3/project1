@@ -3,16 +3,21 @@
 (function(){
     let rocks = [];
     let rockCount = 0;
+
+    let particleArray = [];
+
+    const waveParams = Object.seal({
+        "amount" : 200,
+        "distance" : 5,
+        "radius" : 10,
+        "amplitude" : 60,
+        "length" : Math.PI * 2.25
+    });
     
     const physicsParams = Object.seal({
         "maxVelocity" : 20,
         "acceleration" : 0.5
     });
-
-    // This will temporarily act as the fluid layer of the sandbox
-    function drawSineWave(){
-        
-    }
 
     function spawnRock(e, ctx, rect, radius, mass, color='red'){
         rockCount++;
@@ -28,12 +33,14 @@
 
     function drawRock(ctx){
         for(let i=0;i<rockCount;i++){
+            ctx.save();
             ctx.beginPath();
             // Circles are not centered with the mouse for some reason...will fix in the future
             ctx.arc(rocks[i].x, rocks[i].y, rocks[i].radius, 0, 2*Math.PI, false);
             ctx.closePath();
             ctx.fillStyle = rocks[i].color;
             ctx.fill();
+            ctx.restore();
         }
         dropRocks();
     }
@@ -49,7 +56,6 @@
     
     
     window["rwnsLIB"] = {
-        drawSineWave,
         spawnRock,
         drawRock
 	};

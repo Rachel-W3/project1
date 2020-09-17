@@ -10,7 +10,7 @@
     let gOutput;
     let x = 0, y= 0;
     let counter = 0;
-    const fps = 100;
+    const fps = 12;
     const canvasWidth = 640, canvasHeight = 480;
 
     window.onload = init;
@@ -31,37 +31,30 @@
         gSlider = document.querySelector("#myGravity");
         gOutput = document.querySelector("#gravityOutput");
         setupUI();
-        //loop();
+
         update();
     }
 
     function update(){
         requestAnimationFrame(update);
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-        rwnsLIB.drawRock(ctx);    
+        ctx.save();
+        ctx.globalAlpha = 1/fps;
+        ctx.fillRect(0,0, canvasWidth, canvasHeight);
+        ctx.restore();
+        rwnsLIB.drawRock(ctx);
+        drawWave();
     }
     
-//    function loop(){
-//        
-//       setTimeout(loop,1000/12);
-//       //clear screen
-//       ctx.save()
-//       ctx.fillStyle = "black";
-//       ctx.globalAlpha = 1/fps;
-//       ctx.fillRect(0,0, canvasWidth, canvasHeight);
-//       ctx.restore();
-//       
-//       x+= 10;
-//       counter += .3;//arbitray number that worked well       
-//       y = canvasHeight/2 + Math.cos(counter) * 5;
-//       drawCircle(ctx,x + 10,y + 10,2,"dodgerblue");
-//       
-//       if (x >= canvasWidth)
-//           x = 0;
-//        
-//       // update();
-//    }
+    // This will temporarily act as the fluid layer
+    function drawWave(){
+        x+= 10;
+        counter += .3;//arbitray number that worked well       
+        y = canvasHeight/2 + Math.cos(counter) * 5;
+        drawCircle(ctx,x + 10,y + 10,2,"dodgerblue");
+        
+        if (x >= canvasWidth)
+            x = 0;
+    }
 
     function setupUI(){
         canvas.onclick = function(e){rwnsLIB.spawnRock(e, ctx, rect, slider.value, 0)};
