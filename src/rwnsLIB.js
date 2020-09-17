@@ -4,8 +4,9 @@
     let rocks = [];
     let rockCount = 0;
     
-    const physicsParams = Object.freeze({
-        "acceleration" : 10,
+    const physicsParams = Object.seal({
+        "maxVelocity" : 20,
+        "acceleration" : 0.5
     });
 
     // This will temporarily act as the fluid layer of the sandbox
@@ -20,13 +21,11 @@
                               radius : radius,
                               mass : 0,
                               color : color,
+                              velocity : 0
                             };
-
-        spawnRocks(ctx);
     }
 
-    // Handles the physics of rocks and fluids (latter will be implemented later on)
-    function spawnRocks(ctx){
+    function drawRock(ctx){
         for(let i=0;i<rockCount;i++){
             ctx.beginPath();
             // Circles are not centered with the mouse for some reason...will fix in the future
@@ -34,17 +33,22 @@
             ctx.closePath();
             ctx.fillStyle = rocks[i].color;
             ctx.fill();
-
-            dropRock(rocks[i]);
         }
+        dropRocks();
     }
 
-    function dropRock(rock){
-        
+    // Handles the physics of rocks and fluids (latter will be implemented later on)
+    function dropRocks(){
+        for(let i=0;i<rockCount;i++){
+            rocks[i].velocity += physicsParams.acceleration;
+            if (rocks[i].velocity > physicsParams.maxVelocity) rocks[i].velocity = physicsParams.maxVelocity;
+            rocks[i].y += rocks[i].velocity;
+        }
     }
 
     window["rwnsLIB"] = {
         drawSineWave,
-        spawnRock
+        spawnRock,
+        drawRock
 	};
 })();

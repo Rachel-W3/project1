@@ -20,6 +20,15 @@
         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         setupUI();
+
+        update();
+    }
+
+    function update(){
+        requestAnimationFrame(update);
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        rwnsLIB.drawRock(ctx);
     }
     
     function setupUI(){
