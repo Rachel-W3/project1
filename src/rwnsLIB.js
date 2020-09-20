@@ -1,4 +1,4 @@
-"use strict";
+//prev rock stuff
 
 (function(){
     let rocks = [];
@@ -57,6 +57,7 @@
     
     window["rwnsLIB"] = {
         spawnRock,
-        drawRock
+        drawRock,
+        rocks
 	};
 })();
