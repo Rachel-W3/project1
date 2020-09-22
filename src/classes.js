@@ -6,6 +6,8 @@ class FluidParticle {
 
         this.acceleration = 0;
         this.velocity = 0;
+        this.speed = 50.0; // oscillation speed
+        this.b = 0.05; // dampening constant
         Object.seal(this);
     }
 
