@@ -3,7 +3,14 @@ class FluidParticle {
         this.angle = angle;
         this.xPos = xPos;
         this.color = color;
+
+        this.acceleration = 0;
+        this.velocity = 0;
         Object.seal(this);
+    }
+
+    OnImpact(impulse) {
+        this.velocity += impulse;
     }
 }
 
