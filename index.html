@@ -4,20 +4,24 @@
 	<link rel="stylesheet" href="styles/default-styles.css">
 </head>
 <body>
-	<h1>Fluid Dynamics</h1>
-	<canvas>This browser doesn't support canvases</canvas>
+	<header>
+		<h1>Fluid Dynamics</h1>
+	</header>
+	<section id="sandbox">
+		<canvas>This browser doesn't support canvases</canvas>
+	</section>
+	<section id="controls">
+		<div>
+			<p id="sizeOutput">Size: 30</p>
+			<input type="range" min="10" max="50" value="30" class="slider" id="myRange">
+		</div>
+		<div>
+			<p id="gravityOutput">Gravity: 5</p>
+			<input type="range" min="0.2" max="10" value="5" class="slider" id="myGravity">
+		</div>
+	</section>
 	<script src="src/rwnsLIB.js"></script>
 	<script src="src/index.js"></script>
 	<script src="src/classes.js"></script>
-
-	<section>
-		<p id="sizeOutput">Size: 30</p>
-		<input type="range" min="10" max="50" value="30" class="slider" id="myRange">
-	</section>
-	<section>
-		<p id="gravityOutput">Gravity: 5</p>
-		<input type="range" min="0.2" max="10" value="5" class="slider" id="myGravity">
-	</section>
-
 </body>
 </html>

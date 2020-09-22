@@ -1,18 +1,18 @@
 "use strict";
 
+const canvasWidth = 640, canvasHeight = 480;
+
 (function(){
     let canvas;
     let ctx;
+
     let rect;
     let slider;
     let sizeOutput;
     let gSlider;
     let gOutput;
-    let x = 0, y= 0;
-    let counter = 0;
-    const fps = 12;
-    const canvasWidth = 640, canvasHeight = 480;
 
+    const fps = 12;
 
     //draw wave variables
     let pointsArray;
@@ -31,8 +31,6 @@
         canvas.height = canvasHeight;
 			
         ctx = canvas.getContext('2d');
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
         
         slider = document.querySelector("#myrange");
         sizeOutput = document.querySelector("#sizeOutput");
@@ -40,38 +38,24 @@
         gOutput = document.querySelector("#gravityOutput");
         
         //init wave
-        pointsArray = [];
+        // pointsArray = [];
+        rwnsLIB.setupParticleArray();
+        setupUI();
         initPoints();
         update();
     }
 
     function update(){
         requestAnimationFrame(update);
-//        ctx.save();
-//        //ctx.globalAlpha = 1/fps;
-//        ctx.save();
-//        ctx.fillStyle = "black";
-//        ctx.fillRect(0,0, canvasWidth, canvasHeight);
-//        ctx.restore();
-        rwnsLIB.drawRock(ctx);
+
+        rwnsLIB.updateRock(ctx);
+        rwnsLIB.animateWaves(ctx);
        
         //Wave logic
-        StickWave();
+        //StickWave();
     }
-    
-    // This will temporarily act as the fluid layer
-//    function drawWave(){
-//        x+= 10;
-//        counter += .3;//arbitray number that worked well       
-//        y = canvasHeight/2 + Math.cos(counter) * 5;
-//        drawCircle(ctx,x + 10,y + 10,2,"dodgerblue");
-//        
-//        if (x >= canvasWidth)
-//            x = 0;
-//    }
 
     function setupUI(){
-        
         canvas.onclick = function(e){rwnsLIB.spawnRock(e, ctx, rect, slider.value, 0)};
         slider.oninput = function(e){
             sizeOutput.innerHTML = "Size: " + slider.value;
@@ -116,17 +100,17 @@
     }
 
     function initPoints(pointsArray,space)
+        {
+            pointsArray = [];
+            let pointsArrLength = 30;
+            spaces = canvasWidth/pointsArrLength; //canvas width/ points array length
+            for(let i = 0; i< pointsArrLength; i++)
             {
-               pointsArray = [];
-               let pointsArrLength = 30;
-               spaces = canvasWidth/pointsArrLength; //canvas width/ points array length
-               for(let i = 0; i< pointsArrLength; i++)
-                {
-                    let tempPoint = {x: 0, y :400};
-                    pointsArray[i] = (tempPoint);//0 for tem
-                    pointsArray[i].x = 0;
-                    pointsArray[i].y = 400;
-                }
+                let tempPoint = {x: 0, y :400};
+                pointsArray[i] = (tempPoint);//0 for tem
+                pointsArray[i].x = 0;
+                pointsArray[i].y = 400;
+            }
        }
 
     function StickWave(){
@@ -138,7 +122,7 @@
             ctx.fillRect(canvasWidth/2,canvasHeight/2,5,5);
            
         } 
-         console.log(pointsArray.length);
+        //  console.log(pointsArray.length);
         //ctx.fillRect(canvasWidth/2,canvasHeight/2,5,5);
         ctx.strokeRect(220,20,100,100);
         ctx.restore();

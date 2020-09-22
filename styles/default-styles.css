@@ -6,10 +6,36 @@
 body {
     font-family: sans-serif;
     background-color: rgba(245,253,254);
+    display: grid;
+    grid-template-areas:
+        'header      header'
+        'interactive controls';
+    grid-gap: 20px;
 }
 
-h1 {
-    padding: 2vw;
+/* Keeps both canvases on the same spot */
+#sandbox {
+    grid-area: interactive;
+    position: relative;
+}
+
+#sandbox canvas {
+    position: absolute;
+    border: solid 5px red;
+    top: 0;
+    left: 0;
+}
+
+#controls {
+    width: 30vw;
+    grid-area: controls;
+    border: solid 5px red;
+}
+
+header {
+    grid-area: header;
+    padding: 1vh;
+    text-align: center;
 }
 
 button, input {

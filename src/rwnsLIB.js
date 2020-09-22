@@ -2,62 +2,62 @@
 
 (function(){
     let rocks = [];
-    let rockCount = 0;
-
     let particleArray = [];
 
     const waveParams = Object.seal({
         "amount" : 200,
-        "distance" : 5,
-        "radius" : 10,
-        "amplitude" : 60,
-        "length" : Math.PI * 2.25
-    });
-    
-    const physicsParams = Object.seal({
-        "maxVelocity" : 20,
-        "acceleration" : 0.5
+        "gap" : 5,
+        "rectWidth" : 10,
+        "height" : 60,
+        "span" : Math.PI * 3,
+        "color" : "hsl(hue, 75%, 50%)"
     });
 
     function spawnRock(e, ctx, rect, radius, mass, color='red'){
-        rockCount++;
-        rocks[rockCount-1] = {x : e.clientX-rect.left,
-                              y : e.clientY-rect.top,
-                              radius : radius,
-                              mass : 0,
-                              color : color,
-                              velocity : 0
-                            };
-        
+        rocks.push(new Rock(e.clientX-rect.left, e.clientY-rect.top, radius, mass));
     }
 
-    function drawRock(ctx){
-        for(let i=0;i<rockCount;i++){
+    function updateRock(ctx){
+        // Delete inactive rocks
+        rocks = rocks.filter(r => r.isActive);
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0,0,canvasWidth,canvasHeight);
+        for(let i=0; i<rocks.length; i++){
             ctx.save();
             ctx.beginPath();
-            // Circles are not centered with the mouse for some reason...will fix in the future
-            ctx.arc(rocks[i].x, rocks[i].y, rocks[i].radius, 0, 2*Math.PI, false);
+            ctx.arc(rocks[i].xPos, rocks[i].yPos, rocks[i].radius, 0, 2*Math.PI, false);
             ctx.closePath();
             ctx.fillStyle = rocks[i].color;
             ctx.fill();
             ctx.restore();
-        }
-        dropRocks();
-    }
-
-    // Handles the physics of rocks and fluids (latter will be implemented later on)
-    function dropRocks(){
-        for(let i=0;i<rockCount;i++){
-            rocks[i].velocity += physicsParams.acceleration * (document.querySelector("#myGravity").value);
-            if (rocks[i].velocity > physicsParams.maxVelocity) rocks[i].velocity = physicsParams.maxVelocity;
-            rocks[i].y += rocks[i].velocity;
+            rocks[i].drop();
         }
     }
     
+    function setupParticleArray(){
+        for(let i=0; i<waveParams.amount; i++) {
+            particleArray.push(new FluidParticle(waveParams.span/waveParams.amount*i, 
+                                                (waveParams.rectWidth+waveParams.gap)*i,
+                                                 waveParams.color));
+        }
+    }
+
+    function animateWaves(ctx){
+		particleArray.forEach(p=>{
+            p.angle+= Math.PI/180*4;
+            ctx.beginPath();
+			ctx.rect(p.xPos, Math.sin(p.angle)*waveParams.height+canvasHeight/3*2, waveParams.rectWidth, canvasHeight);
+			ctx.closePath();
+			ctx.fillStyle=p.color.replace("hue", p.angle*30);
+			ctx.fill();
+		})
+    }
     
     window["rwnsLIB"] = {
         spawnRock,
-        drawRock,
-        rocks
+        updateRock,
+        setupParticleArray,
+        animateWaves
 	};
 })();
