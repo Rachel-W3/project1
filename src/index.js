@@ -41,7 +41,7 @@ const canvasWidth = 640, canvasHeight = 480;
         // pointsArray = [];
         rwnsLIB.setupParticleArray();
         setupUI();
-        initPoints();
+       
         update();
     }
 
@@ -84,62 +84,7 @@ const canvasWidth = 640, canvasHeight = 480;
 		ctx.restore();
 	}
     
-    //At this point i said fuck it
     
-    //declare object point
-    let Point ={
-        //acceleration, velocity, x, y
-        a: 0,
-        v: 0,
-        x: 0,
-        y: 0,
-        isCollider : function(impulse,dt){
-            //when called velocity for this point will increase by impulse *dt
-            v += impulse * dt;
-        }
-    }
-
-    function initPoints(pointsArray,space)
-        {
-            pointsArray = [];
-            let pointsArrLength = 30;
-            spaces = canvasWidth/pointsArrLength; //canvas width/ points array length
-            for(let i = 0; i< pointsArrLength; i++)
-            {
-                let tempPoint = {x: 0, y :400};
-                pointsArray[i] = (tempPoint);//0 for tem
-                pointsArray[i].x = 0;
-                pointsArray[i].y = 400;
-            }
-       }
-
-    function StickWave(){
-        //draw logic
-        ctx.save();
-        ctx.fillStyle = "cyan";
-        for(let i = 0; i < pointsArray.length; i++)
-        {
-            ctx.fillRect(canvasWidth/2,canvasHeight/2,5,5);
-           
-        } 
-        //  console.log(pointsArray.length);
-        //ctx.fillRect(canvasWidth/2,canvasHeight/2,5,5);
-        ctx.strokeRect(220,20,100,100);
-        ctx.restore();
-        
-        let a = 100;
-        let k = (2 * Math.PI /640); //divide by width
-        let w = (2 * Math.PI/5);
-        
-        let ballm; //come back to this Nuha it's ball Mass need ball clas for this
-        //set offsets
-        let n = Math.floor(1.5 * ballm/spaces);
-        for (let i =0 ; i < pointsArray.length; i++)
-        {
-            offsets[i] =  a * Math.cos(k*x - w * t); //t is a global time variable
-            dy -= offsets;
-        }
-    }
  
  
  })();
