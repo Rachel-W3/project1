@@ -1,4 +1,5 @@
-* {
+*
+{
     margin: 0;
     padding: 0;
 }
@@ -9,8 +10,12 @@ body {
     display: grid;
     grid-template-areas:
         'header      header'
-        'interactive controls';
+        'interactive controls'
+        'footer';
     grid-gap: 20px;
+    background-image: url(../images/bg3.jpg);
+    background-repeat: no-repeat;
+    background-size:contain;
 }
 
 /* Keeps both canvases on the same spot */
@@ -36,6 +41,7 @@ header {
     grid-area: header;
     padding: 1vh;
     text-align: center;
+    font-size:3vh;
 }
 
 button, input {
