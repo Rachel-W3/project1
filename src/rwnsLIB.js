@@ -1,54 +1,143 @@
-"use strict";
+//prev rock stuff
 
 (function(){
     let rocks = [];
-    let rockCount = 0;
-    
-    const physicsParams = Object.seal({
-        "maxVelocity" : 20,
-        "acceleration" : 0.5
+    let particleArray = [];
+
+    const waveParams = Object.seal({
+        "amount" : 50,
+        "gap" : 5,
+        "rectWidth" : 10,
+        "height" : 15,
+        "span" : Math.PI * 6,
+        "color" : "hsl(hue, 75%, 50%)",
+        "oSpeed" : 5, // oscillation speed
+        "b" : 0.01 // dampening constant
     });
 
-    // This will temporarily act as the fluid layer of the sandbox
-    function drawSineWave(){
-
-    }
-
     function spawnRock(e, ctx, rect, radius, mass, color='red'){
-        rockCount++;
-        rocks[rockCount-1] = {x : e.clientX-rect.left,
-                              y : e.clientY-rect.top,
-                              radius : radius,
-                              mass : 0,
-                              color : color,
-                              velocity : 0
-                            };
+        rocks.push(new Rock(e.clientX-rect.left, e.clientY-rect.top, radius, mass));
     }
 
-    function drawRock(ctx){
-        for(let i=0;i<rockCount;i++){
+    function updateRock(ctx){
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0,0,canvasWidth,canvasHeight);
+        for(let i=0; i<rocks.length; i++){
+            checkCollision(rocks[i]);
+            ctx.save();
             ctx.beginPath();
-            // Circles are not centered with the mouse for some reason...will fix in the future
-            ctx.arc(rocks[i].x, rocks[i].y, rocks[i].radius, 0, 2*Math.PI, false);
+            ctx.arc(rocks[i].xPos, rocks[i].yPos, rocks[i].radius, 0, 2*Math.PI, false);
             ctx.closePath();
             ctx.fillStyle = rocks[i].color;
             ctx.fill();
+            ctx.restore();
+            rocks[i].drop();
         }
-        dropRocks();
+        // Delete inactive rocks
+        rocks = rocks.filter(r => r.isActive);
+    }
+    
+    function setupParticleArray(){
+        for(let i=0; i<waveParams.amount; i++) {
+            particleArray.push(new FluidParticle(waveParams.span/waveParams.amount*i, 
+                                                (waveParams.rectWidth+waveParams.gap)*i,
+                                                 waveParams.height,
+                                                 waveParams.color));
+        }
     }
 
-    // Handles the physics of rocks and fluids (latter will be implemented later on)
-    function dropRocks(){
-        for(let i=0;i<rockCount;i++){
-            rocks[i].velocity += physicsParams.acceleration;
-            if (rocks[i].velocity > physicsParams.maxVelocity) rocks[i].velocity = physicsParams.maxVelocity;
-            rocks[i].y += rocks[i].velocity;
+    function updateWaves(){
+        for(let i=1; i < particleArray.length-1; i++){
+            particleArray[i].acceleration = calculateParticleAcceleration(i);
         }
+        particleArray[0].velocity = 0;
+        particleArray[particleArray.length-1].velocity = 0;
     }
 
+    function animateWaves(ctx){
+		particleArray.forEach(p=>{
+            p.updateParticle();
+            p.angle+= Math.PI/180*4;
+            ctx.beginPath();
+			ctx.rect(p.xPos, p.yPos+Math.sin(p.angle)*waveParams.height+2*canvasHeight/3, waveParams.rectWidth, canvasHeight);
+			ctx.closePath();
+			ctx.fillStyle=p.color.replace("hue", p.angle*30);
+			ctx.fill();
+		})
+    }
+
+    // Calculates the acceleration for particle at index i
+    function calculateParticleAcceleration(i){
+        let y_left = particleArray[i-1].yPos;
+        let y_center = particleArray[i].yPos;
+        let y_right = particleArray[i+1].yPos;
+
+        let v_center = particleArray[i].velocity;
+
+        // dx = space between leftmost and rightmost particle
+        let dx = 0.5 * Math.abs(particleArray[i+1].xPos - particleArray[i-1].xPos);
+        // acceleration = second derivative of position
+        let d2y = (y_left - 2 * y_center + y_right) / (2 * dx);
+        let a_elastic = Math.pow(waveParams.oSpeed, 2) * d2y;
+        let a_drag = -waveParams.b * v_center;
+        return a_elastic + a_drag;
+    }
+
+    function checkCollision(rock){
+        // number of overlapping particles
+        let numOverlap = Math.floor(1.5 * rock.radius / waveParams.gap);
+
+        // Particle that the ball is directly over
+        let waveWidth = (waveParams.gap + waveParams.rectWidth) * waveParams.amount;
+        let index = Math.floor((rock.xPos / waveWidth) * particleArray.length);
+        if(index > particleArray.length - 1 || index < 0) return;
+        let particleCollided = particleArray[index];
+        
+        let dy = (particleCollided.yPos + Math.sin(particleCollided.angle)*particleCollided.yPos+canvasHeight/3*2) - rock.yPos;
+        if(dy+30 <= rock.radius) //had to add an offset so it doesn't disappear right before the collision
+        {
+            // Calculate how much impulse (i.e. "collision force") to deliver to the point
+            // -- Just the momentum of the ball for simplicity
+            let impulse = rock.mass * rock.velocity;
+            particleCollided.onImpact(impulse);
+            
+            // To make it smoother and actually look the way we want... 
+            // we'll also have the ball collide with the points around it, but to a lesser degree
+            for(let i = -numOverlap; i <= numOverlap; i++)
+            {
+                // Make sure we don't double count the middle point
+                if(i != 0)
+                {
+                    let other_index = index + i;
+                    
+                    // Don't go out of bounds
+                    if(other_index >= 0 && other_index <= particleArray.length - 1)
+                    {
+                        // Linearly decrease the impulse for the adjacent points
+                        // -- Points close to the center of impact will have a higher impulse
+                        // -- Points further away from the center will have a lower impulse (since they weren't hit as directly)
+                        let other_impulse = map_range(Math.abs(i), 0, numOverlap, impulse, 0);
+                        
+                        particleArray[other_index].onImpact(other_impulse);
+                    }
+                }
+            }
+            rock.isActive = false; // this rock will later be deleted from the list
+            return true;
+        }
+        return false;
+    }
+
+    // Substitute for map() in processing
+    function map_range(value, low1, high1, low2, high2) {
+        return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+    }
+    
     window["rwnsLIB"] = {
-        drawSineWave,
+        updateWaves,
         spawnRock,
-        drawRock
+        updateRock,
+        setupParticleArray,
+        animateWaves
 	};
 })();

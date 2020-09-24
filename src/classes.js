@@ -1,17 +1,25 @@
 class FluidParticle {
-    constructor(angle, xPos, color) {
+    constructor(angle, xPos, yPos, color, maxAcceleration) {
         this.angle = angle;
         this.xPos = xPos;
+        this.yPos = yPos,
         this.color = color;
 
         this.acceleration = 0;
         this.velocity = 0;
-        this.speed = 50.0; // oscillation speed
-        this.b = 0.05; // dampening constant
+        this.maxAcceleration = 3.5;
         Object.seal(this);
     }
 
-    OnImpact(impulse) {
+    updateParticle() {
+        if(this.acceleration > this.maxAcceleration) this.acceleration = this.maxAcceleration;
+        if(this.acceleration < -this.maxAcceleration) this.acceleration = -this.maxAcceleration;
+        this.velocity += this.acceleration;
+        this.yPos += this.velocity;
+        this.acceleration = 0;
+    }
+
+    onImpact(impulse) {
         this.velocity += impulse;
     }
 }
@@ -26,7 +34,7 @@ class Rock {
 
         this.maxVelocity = 20;
         this.velocity = 0;
-        this.acceleration = 0.5;
+        this.acceleration = 0.2;
         this.isActive = true;
         Object.seal(this);
     }
@@ -34,7 +42,6 @@ class Rock {
     drop() {
         this.velocity += this.acceleration * (document.querySelector("#myGravity").value);
         if (this.velocity > this.maxVelocity) this.velocity = this.maxVelocity; // cap the fall speed
-        if (this.yPos > canvasHeight) this.isActive = false; // this rock will later be deleted from the list
         this.yPos += this.velocity;
     }
 }
