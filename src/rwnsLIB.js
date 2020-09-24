@@ -1,63 +1,54 @@
-//prev rock stuff
+"use strict";
 
 (function(){
     let rocks = [];
-    let particleArray = [];
-
-    const waveParams = Object.seal({
-        "amount" : 200,
-        "gap" : 5,
-        "rectWidth" : 10,
-        "height" : 60,
-        "span" : Math.PI * 3,
-        "color" : "hsl(hue, 75%, 50%)"
+    let rockCount = 0;
+    
+    const physicsParams = Object.seal({
+        "maxVelocity" : 20,
+        "acceleration" : 0.5
     });
 
-    function spawnRock(e, ctx, rect, radius, mass, color='red'){
-        rocks.push(new Rock(e.clientX-rect.left, e.clientY-rect.top, radius, mass));
+    // This will temporarily act as the fluid layer of the sandbox
+    function drawSineWave(){
+
     }
 
-    function updateRock(ctx){
-        // Delete inactive rocks
-        rocks = rocks.filter(r => r.isActive);
+    function spawnRock(e, ctx, rect, radius, mass, color='red'){
+        rockCount++;
+        rocks[rockCount-1] = {x : e.clientX-rect.left,
+                              y : e.clientY-rect.top,
+                              radius : radius,
+                              mass : 0,
+                              color : color,
+                              velocity : 0
+                            };
+    }
 
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0,0,canvasWidth,canvasHeight);
-        for(let i=0; i<rocks.length; i++){
-            ctx.save();
+    function drawRock(ctx){
+        for(let i=0;i<rockCount;i++){
             ctx.beginPath();
-            ctx.arc(rocks[i].xPos, rocks[i].yPos, rocks[i].radius, 0, 2*Math.PI, false);
+            // Circles are not centered with the mouse for some reason...will fix in the future
+            ctx.arc(rocks[i].x, rocks[i].y, rocks[i].radius, 0, 2*Math.PI, false);
             ctx.closePath();
             ctx.fillStyle = rocks[i].color;
             ctx.fill();
-            ctx.restore();
-            rocks[i].drop();
         }
+        dropRocks();
     }
-    
-    function setupParticleArray(){
-        for(let i=0; i<waveParams.amount; i++) {
-            particleArray.push(new FluidParticle(waveParams.span/waveParams.amount*i, 
-                                                (waveParams.rectWidth+waveParams.gap)*i,
-                                                 waveParams.color));
+
+    // Handles the physics of rocks and fluids (latter will be implemented later on)
+    function dropRocks(){
+        for(let i=0;i<rockCount;i++){
+            rocks[i].velocity += physicsParams.acceleration;
+            if (rocks[i].velocity > physicsParams.maxVelocity) rocks[i].velocity = physicsParams.maxVelocity;
+            rocks[i].y += rocks[i].velocity;
         }
     }
 
-    function animateWaves(ctx){
-		particleArray.forEach(p=>{
-            p.angle+= Math.PI/180*4;
-            ctx.beginPath();
-			ctx.rect(p.xPos, Math.sin(p.angle)*waveParams.height+canvasHeight/3*2, waveParams.rectWidth, canvasHeight);
-			ctx.closePath();
-			ctx.fillStyle=p.color.replace("hue", p.angle*30);
-			ctx.fill();
-		})
-    }
-    
     window["rwnsLIB"] = {
+        drawSineWave,
         spawnRock,
-        updateRock,
-        setupParticleArray,
-        animateWaves
+        drawRock
 	};
 })();
