@@ -41,20 +41,21 @@ const canvasWidth = window.innerWidth * (4/6), canvasHeight = window.innerHeight
         canvas.height = canvasHeight;
 			
         ctx = canvas.getContext('2d');
+    
         
         slider = document.querySelector("#myrange");
         sizeOutput = document.querySelector("#sizeOutput");
         gSlider = document.querySelector("#myGravity");
         gOutput = document.querySelector("#gravityOutput");
-        lineSlider = document.querySelector("#myLineGap");
-        lineOutput = document.querySelector("#lineGap");
-        rectSizeSlider = document.querySelector("#myRectangleWidth");
+//        lineSlider = document.querySelector("#myLineGapSlider");
+//        lineOutput = document.querySelector("#lineGap");
+        rectSizeSlider = document.querySelector("#myRectWidthSlider");
         rectSizeOutput = document.querySelector("#rectangleWidth");
-        waveInSlider = document.querySelector("#myHeight");
+        waveInSlider = document.querySelector("#myHeightSlider");
         waveInOutput = document.querySelector("#rectangleHeight");
-        waveNumSlider = document.querySelector("#mySpan");
-        waveNumOutput  = document.querySelector("#Span");
-        //init wave
+//        waveNumSlider = document.querySelector("#myWaveSpanSlider");
+//        waveNumOutput  = document.querySelector("#spanOfWaves");
+//        //init wave
         // pointsArray = [];
         rwnsLIB.setupParticleArray();
         setupUI();
@@ -73,24 +74,27 @@ const canvasWidth = window.innerWidth * (4/6), canvasHeight = window.innerHeight
     function setupUI(){
         canvas.onclick = function(e){rwnsLIB.spawnRock(e, ctx, rect, slider.value, 1.0)};
         slider.oninput = function(e){
-            sizeOutput.innerHTML = "Size: " + slider.value;
-        }
+            sizeOutput.innerHTML = "Ball Size: " + slider.value;
+        };
         gSlider.oninput = function(e){
             gOutput.innerHTML = "Gravity: " + gSlider.value;
-        }
-        lineSlider.oninput = function(e){
-            lineOutput.innerHTML = "Size of Line Gap: " + lineSlider.value;
-        }
+        };
+//        lineSlider.oninput = function(e){
+//            lineOutput.innerHTML = "Size of Line Gap: " + lineSlider.value;
+//            console.log("Something");
+//        };
         rectSizeSlider.oninput = function(e){
-            rectSizeOutput.innerHTML = "Size of Rectangles " + rectSizeSlider.value;
-           
-        }
+            rectSizeOutput.innerHTML = "Size of Rectangles (Visual Only): " + rectSizeSlider.value;
+           console.log("Something");
+        };
         waveInSlider.oninput = function(e){
-            waveInOutput.innerHTML = "Wave Intensity: " + waveInSlider.value;
-        }
-        waveNumSlider.oninput = function(e){
-            waveNumOutput.innerHTML = "Number of Waves: " + waveNumSlider.value;
-        }
+             waveInOutput.innerHTML = "Wave Intensity: " + waveInSlider.value;
+            console.log("Something");
+        };
+//        waveNumSlider.oninput = function(e){
+//            waveNumOutput.innerHTML = "Number of Waves: " + waveNumSlider.value;
+//            
+//        };
     }
     
     // helpers functions 

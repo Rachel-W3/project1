@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Project 1</title>
@@ -14,33 +15,44 @@
         </section>
         <section id="controls">
             <div>
-                <p id="sizeOutput">Size: 30</p>
+                <p id="sizeOutput"> Ball Size: 30</p>
                 <input type="range" min="10" max="50" value="30" class="slider" id="myRange">
             </div>
             <div>
                 <p id="gravityOutput">Gravity: 5</p>
                 <input type="range" min="0.2" max="10" value="5" class="slider" id="myGravity">
             </div>
+<!--
             <div>
                 <p id="lineGap">Size of Line Gap: 5</p>
-                <input type="range" min="3" max="10" value="5" class="slider" id="myLineGap">
+                <input type="range" min="3" max="40" value="5" class="slider" id="myLineGapSlider">
             </div>
+-->
             <div>
-                <p id="rectangleWidth">Size of Rectangles: 10</p>
-                <input type="range" min="10" max="20" value="10" class="slider" id="myRectangleWidth">
-            </div>
-            <div>
-                <p id="rectangleHeight">Wave Intensity: 15</p>
-                <input type="range" min="15" max="50" value="15" class="slider" id="myHeight">
-            </div>
-            <div>
-                <p id="span">Number of Waves: 6</p>
-                <input type="range" min="6" max="15" value="6" class="slider" id="mySpan">
-            </div>
+                <p id="rectangleHeight">Wave Intensity</p>
+                <input type="range" min="15" max="50" value="15" class="slider" id="myHeightSlider">
+            </div> 
             
-            <p>
+            <div>
+                <p id="rectangleWidth">Size of Rectangles (Visual Only)</p>
+                <input type="range" min="10" max="20" value="10" class="slider" id="myRectWidthSlider">
+            </div>
+<!--
+            <div>
+                <p id="spanOfWaves">Number of Waves: 6</p>
+                <input type="range" min="6" max="15" value="6" class="slider" id="myWaveSpanSlider">
+            </div>
+-->
+            <div id= "otherinfo">
+            <p id = "Instructions">
                 Click on the Canvas To Play Around!
             </p>
+            
+            <p id = "authorText">Developed By:
+            Nuha Syed
+            and
+            Rachel Wong</p>
+            </div>
         </section>
 	<script src="src/rwnsLIB.js"></script>
 	<script src="src/index.js"></script>

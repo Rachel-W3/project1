@@ -47,4 +47,13 @@ p{
 }
 .slider{
     height: 2vh;
+    width: 12vw;
+    margin-bottom:5vh;
+}
+#instructions{
+    font-size: 6vh;
+}
+#authorText{
+    padding-top: 2vh;
+    font-size: 2.8vh;
 }

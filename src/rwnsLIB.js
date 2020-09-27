@@ -4,7 +4,12 @@
     let rocks = [];
     let particleArray = [];
      
-          
+    //controls for oninput use
+    let lineSlider = document.querySelector("#myLineGapSlider");
+    let rectSizeSlider = document.querySelector("#myRectWidthSlider");
+    let waveInSlider = document.querySelector("#myHeightSlider");
+    let waveNumSlider = document.querySelector("#myWaveSpanSlider");
+    
     let waveParams = Object.seal({
         "amount" : 124,
         "gap" : 5,//3-`10
@@ -15,7 +20,7 @@
         "oSpeed" : 5, // oscillation speed
         "b" : 0.01// dampening constant
     });
-
+    
     function spawnRock(e, ctx, rect, radius, mass, color='red'){
         rocks.push(new Rock(e.clientX-rect.left, e.clientY-rect.top, radius, mass));
     }
@@ -23,6 +28,22 @@
     function updateRock(ctx){
         ctx.fillStyle = 'black';
         ctx.fillRect(0,0,canvasWidth,canvasHeight);
+         
+        //if slider value changes on input
+//        lineSlider.oninput = function(e){
+//           waveParams.gap = lineSlider.value;
+//            console.log(lineSlider.value);
+//        }
+        rectSizeSlider.oninput = function(e){
+           waveParams.rectWidth = rectSizeSlider.value;
+        }
+         waveInSlider.oninput = function(e){
+            waveParams.height = waveInSlider.value;
+        }
+//        waveNumSlider.oninput = function(e){
+//           waveParams.span = Math.PI * waveNumSlider.value;
+//        }
+        
         for(let i=0; i<rocks.length; i++){
             checkCollision(rocks[i],ctx);
             ctx.save();
@@ -72,7 +93,7 @@
         ctx.strokeStyle = "white";
         ctx.globalAlpha= 1/2;
         ctx.moveTo(p.xPos,canvasHeight,)
-        ctx.lineTo(p.xPos,Math.sin(p.angle)*waveParams.height+2*canvasHeight/3 + 200);
+        ctx.lineTo(p.xPos,Math.sin(p.angle)*waveParams.height+2*canvasHeight/3 + 160);
         ctx.lineWidth = 16;
         ctx.stroke();
         ctx.restore();
