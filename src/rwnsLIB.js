@@ -77,32 +77,41 @@
 			ctx.rect(p.xPos, p.yPos+Math.sin(p.angle)*waveParams.height+2*canvasHeight/3, waveParams.rectWidth, canvasHeight);
 			ctx.closePath();
 			//ctx.fillStyle=p.color.replace("hue", p.angle*30);
-            
-
+            var grad = ctx.createLinearGradient(canvasWidth/2, 0, canvasWidth/2, canvasHeight);
+            //Color Change
             if ( document.querySelector('#colorStyle').value == "Rainbow")
             {
-               ctx.fillStyle=p.color.replace("hue", p.angle*30);
-    
+              ctx.fillStyle=p.color.replace("hue", p.angle*30);
             }
             else if ( document.querySelector('#colorStyle').value == "Blue")
             {
-               ctx.fillStyle=("hsl(250, 75%, 50%)");
-                ctx.fillStyle=waveParams.color.replace();
+                 grad.addColorStop(0.75, 'aqua');
+                    grad.addColorStop(1, 'blue');           
+                    ctx.fillStyle = grad;
             }
             else if ( document.querySelector('#colorStyle').value == "Red")
             {
-               ctx.fillStyle=("hsl(15, 75%, 50%)");
-                ctx.fillStyle=waveParams.color.replace();
+                 grad.addColorStop(0.5, 'yellow');
+                 grad.addColorStop(0.7, 'orange'); 
+                 grad.addColorStop(1, 'red');    
+                 ctx.fillStyle = grad;
             }
             else if ( document.querySelector('#colorStyle').value == "Yellow")
             {
-               ctx.fillStyle=("hsl(40, 75%, 50%)");
-                ctx.fillStyle=waveParams.color.replace();
+                grad.addColorStop(0.5, 'cyan');
+                 grad.addColorStop(0.8, 'magenta'); 
+                 grad.addColorStop(1, 'yellow');    
+                 ctx.fillStyle = grad;
             }
             else if ( document.querySelector('#colorStyle').value == "Green")
-            {
-               ctx.fillStyle=("hsl(100, 75%, 50%)");
-                ctx.fillStyle=waveParams.color.replace();
+            {  
+                var img = document.querySelector('img');
+                    var pat = ctx.createPattern(img,"repeat");
+                    ctx.fillStyle = pat;
+            }
+            else if ( document.querySelector('#colorStyle').value == "Rave")
+            {  
+                ctx.fillStyle=p.color.replace("hue", p.angle*270);
             }
             ctx.fill();
             
