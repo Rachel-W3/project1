@@ -49,8 +49,8 @@ const canvasWidth = window.innerWidth * (4/6), canvasHeight = window.innerHeight
         gOutput = document.querySelector("#gravityOutput");
 //        lineSlider = document.querySelector("#myLineGapSlider");
 //        lineOutput = document.querySelector("#lineGap");
-        rectSizeSlider = document.querySelector("#myRectWidthSlider");
-        rectSizeOutput = document.querySelector("#rectangleWidth");
+//        rectSizeSlider = document.querySelector("#myRectWidthSlider");
+//        rectSizeOutput = document.querySelector("#rectangleWidth");
         waveInSlider = document.querySelector("#myHeightSlider");
         waveInOutput = document.querySelector("#rectangleHeight");
 //        waveNumSlider = document.querySelector("#myWaveSpanSlider");
@@ -83,10 +83,10 @@ const canvasWidth = window.innerWidth * (4/6), canvasHeight = window.innerHeight
 //            lineOutput.innerHTML = "Size of Line Gap: " + lineSlider.value;
 //            console.log("Something");
 //        };
-        rectSizeSlider.oninput = function(e){
-            rectSizeOutput.innerHTML = "Size of Rectangles (Visual Only): " + rectSizeSlider.value;
-           console.log("Something");
-        };
+//        rectSizeSlider.oninput = function(e){
+//            rectSizeOutput.innerHTML = "Size of Rectangles (Visual Only): " + rectSizeSlider.value;
+//           console.log("Something");
+//        };
         waveInSlider.oninput = function(e){
              waveInOutput.innerHTML = "Wave Intensity: " + waveInSlider.value;
             console.log("Something");
@@ -95,6 +95,7 @@ const canvasWidth = window.innerWidth * (4/6), canvasHeight = window.innerHeight
 //            waveNumOutput.innerHTML = "Number of Waves: " + waveNumSlider.value;
 //            
 //        };
+       
     }
     
     // helpers functions 

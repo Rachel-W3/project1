@@ -6,10 +6,10 @@
      
     //controls for oninput use
     let lineSlider = document.querySelector("#myLineGapSlider");
-    let rectSizeSlider = document.querySelector("#myRectWidthSlider");
+   // let rectSizeSlider = document.querySelector("#myRectWidthSlider");
     let waveInSlider = document.querySelector("#myHeightSlider");
-    let waveNumSlider = document.querySelector("#myWaveSpanSlider");
-    
+    //let waveNumSlider = document.querySelector("#myWaveSpanSlider");
+    let oscSlider = document.querySelector("#myOscSlider");
     let waveParams = Object.seal({
         "amount" : 124,
         "gap" : 5,//3-`10
@@ -29,20 +29,13 @@
         ctx.fillStyle = 'black';
         ctx.fillRect(0,0,canvasWidth,canvasHeight);
          
-        //if slider value changes on input
-//        lineSlider.oninput = function(e){
-//           waveParams.gap = lineSlider.value;
-//            console.log(lineSlider.value);
-//        }
-        rectSizeSlider.oninput = function(e){
-           waveParams.rectWidth = rectSizeSlider.value;
-        }
          waveInSlider.oninput = function(e){
             waveParams.height = waveInSlider.value;
         }
-//        waveNumSlider.oninput = function(e){
-//           waveParams.span = Math.PI * waveNumSlider.value;
-//        }
+         oscSlider.oninput = function(e){
+            waveParams.oSpeed = oscSlider.value;
+        }
+        
         
         for(let i=0; i<rocks.length; i++){
             checkCollision(rocks[i],ctx);
@@ -83,9 +76,37 @@
             ctx.beginPath();
 			ctx.rect(p.xPos, p.yPos+Math.sin(p.angle)*waveParams.height+2*canvasHeight/3, waveParams.rectWidth, canvasHeight);
 			ctx.closePath();
-			ctx.fillStyle=p.color.replace("hue", p.angle*30);
-			ctx.fill();
+			//ctx.fillStyle=p.color.replace("hue", p.angle*30);
             
+
+            if ( document.querySelector('#colorStyle').value == "Rainbow")
+            {
+               ctx.fillStyle=p.color.replace("hue", p.angle*30);
+    
+            }
+            else if ( document.querySelector('#colorStyle').value == "Blue")
+            {
+               ctx.fillStyle=("hsl(250, 75%, 50%)");
+                ctx.fillStyle=waveParams.color.replace();
+            }
+            else if ( document.querySelector('#colorStyle').value == "Red")
+            {
+               ctx.fillStyle=("hsl(15, 75%, 50%)");
+                ctx.fillStyle=waveParams.color.replace();
+            }
+            else if ( document.querySelector('#colorStyle').value == "Yellow")
+            {
+               ctx.fillStyle=("hsl(40, 75%, 50%)");
+                ctx.fillStyle=waveParams.color.replace();
+            }
+            else if ( document.querySelector('#colorStyle').value == "Green")
+            {
+               ctx.fillStyle=("hsl(100, 75%, 50%)");
+                ctx.fillStyle=waveParams.color.replace();
+            }
+            ctx.fill();
+            
+        
             
         //use lines to draw sea mist    
         ctx.save();
