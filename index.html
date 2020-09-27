@@ -2,24 +2,46 @@
 <head>
 	<title>Project 1</title>
 	<link rel="stylesheet" href="styles/default-styles.css">
+	<link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/sniglet" type="text/css"/>
+	<link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/mrs-beasley" type="text/css"/>
 </head>
 <body>
 	<header>
 		<h1>Fluid Dynamics</h1>
 	</header>
-	<section id="sandbox">
-		<canvas>This browser doesn't support canvases</canvas>
-	</section>
-	<section id="controls">
-		<div>
-			<p id="sizeOutput">Size: 30</p>
-			<input type="range" min="10" max="50" value="30" class="slider" id="myRange">
-		</div>
-		<div>
-			<p id="gravityOutput">Gravity: 5</p>
-			<input type="range" min="0.2" max="10" value="5" class="slider" id="myGravity">
-		</div>
-	</section>
+        <section id="sandbox">
+            <canvas>This browser doesn't support canvases</canvas>
+        </section>
+        <section id="controls">
+            <div>
+                <p id="sizeOutput">Size: 30</p>
+                <input type="range" min="10" max="50" value="30" class="slider" id="myRange">
+            </div>
+            <div>
+                <p id="gravityOutput">Gravity: 5</p>
+                <input type="range" min="0.2" max="10" value="5" class="slider" id="myGravity">
+            </div>
+            <div>
+                <p id="lineGap">Size of Line Gap: 5</p>
+                <input type="range" min="3" max="10" value="5" class="slider" id="myLineGap">
+            </div>
+            <div>
+                <p id="rectangleWidth">Size of Rectangles: 10</p>
+                <input type="range" min="10" max="20" value="10" class="slider" id="myRectangleWidth">
+            </div>
+            <div>
+                <p id="rectangleHeight">Wave Intensity: 15</p>
+                <input type="range" min="15" max="50" value="15" class="slider" id="myHeight">
+            </div>
+            <div>
+                <p id="span">Number of Waves: 6</p>
+                <input type="range" min="6" max="15" value="6" class="slider" id="mySpan">
+            </div>
+            
+            <p>
+                Click on the Canvas To Play Around!
+            </p>
+        </section>
 	<script src="src/rwnsLIB.js"></script>
 	<script src="src/index.js"></script>
 	<script src="src/classes.js"></script>

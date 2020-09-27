@@ -1,17 +1,27 @@
 "use strict";
 
-const canvasWidth = 1000, canvasHeight = 480;
+const canvasWidth = window.innerWidth * (4/6), canvasHeight = window.innerHeight - 210;
+//const canvasWidth = 10, canvasHeight = 10;
 
 (function(){
     let canvas;
     let ctx;
 
+    //all controls
     let rect;
     let slider;
     let sizeOutput;
     let gSlider;
     let gOutput;
-
+    let lineSlider;
+    let lineOutput;
+    let rectSizeSlider;
+    let rectSizeOutput;
+    let waveInSlider;
+    let waveInOutput;
+    let waveNumSlider;
+    let waveNumOutput;
+    
     const fps = 12;
 
     //draw wave variables
@@ -36,7 +46,14 @@ const canvasWidth = 1000, canvasHeight = 480;
         sizeOutput = document.querySelector("#sizeOutput");
         gSlider = document.querySelector("#myGravity");
         gOutput = document.querySelector("#gravityOutput");
-        
+        lineSlider = document.querySelector("#myLineGap");
+        lineOutput = document.querySelector("#lineGap");
+        rectSizeSlider = document.querySelector("#myRectangleWidth");
+        rectSizeOutput = document.querySelector("#rectangleWidth");
+        waveInSlider = document.querySelector("#myHeight");
+        waveInOutput = document.querySelector("#rectangleHeight");
+        waveNumSlider = document.querySelector("#mySpan");
+        waveNumOutput  = document.querySelector("#Span");
         //init wave
         // pointsArray = [];
         rwnsLIB.setupParticleArray();
@@ -60,6 +77,19 @@ const canvasWidth = 1000, canvasHeight = 480;
         }
         gSlider.oninput = function(e){
             gOutput.innerHTML = "Gravity: " + gSlider.value;
+        }
+        lineSlider.oninput = function(e){
+            lineOutput.innerHTML = "Size of Line Gap: " + lineSlider.value;
+        }
+        rectSizeSlider.oninput = function(e){
+            rectSizeOutput.innerHTML = "Size of Rectangles " + rectSizeSlider.value;
+           
+        }
+        waveInSlider.oninput = function(e){
+            waveInOutput.innerHTML = "Wave Intensity: " + waveInSlider.value;
+        }
+        waveNumSlider.oninput = function(e){
+            waveNumOutput.innerHTML = "Number of Waves: " + waveNumSlider.value;
         }
     }
     

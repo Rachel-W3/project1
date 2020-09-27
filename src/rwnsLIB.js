@@ -3,16 +3,17 @@
 (function(){
     let rocks = [];
     let particleArray = [];
-
-    const waveParams = Object.seal({
-        "amount" : 50,
-        "gap" : 5,
-        "rectWidth" : 10,
-        "height" : 15,
-        "span" : Math.PI * 6,
+     
+          
+    let waveParams = Object.seal({
+        "amount" : 124,
+        "gap" : 5,//3-`10
+        "rectWidth" : 10,//10-20
+        "height" : 15,//wave intensity 15 - 50
+        "span" : Math.PI * 6, //number of waves 6 - 15
         "color" : "hsl(hue, 75%, 50%)",
         "oSpeed" : 5, // oscillation speed
-        "b" : 0.01 // dampening constant
+        "b" : 0.01// dampening constant
     });
 
     function spawnRock(e, ctx, rect, radius, mass, color='red'){
@@ -23,7 +24,7 @@
         ctx.fillStyle = 'black';
         ctx.fillRect(0,0,canvasWidth,canvasHeight);
         for(let i=0; i<rocks.length; i++){
-            checkCollision(rocks[i]);
+            checkCollision(rocks[i],ctx);
             ctx.save();
             ctx.beginPath();
             ctx.arc(rocks[i].xPos, rocks[i].yPos, rocks[i].radius, 0, 2*Math.PI, false);
@@ -63,6 +64,18 @@
 			ctx.closePath();
 			ctx.fillStyle=p.color.replace("hue", p.angle*30);
 			ctx.fill();
+            
+            
+        //use lines to draw sea mist    
+        ctx.save();
+        ctx.beginPath();
+        ctx.strokeStyle = "white";
+        ctx.globalAlpha= 1/2;
+        ctx.moveTo(p.xPos,canvasHeight,)
+        ctx.lineTo(p.xPos,Math.sin(p.angle)*waveParams.height+2*canvasHeight/3 + 200);
+        ctx.lineWidth = 16;
+        ctx.stroke();
+        ctx.restore();
 		})
     }
 
@@ -83,7 +96,7 @@
         return a_elastic + a_drag;
     }
 
-    function checkCollision(rock){
+    function checkCollision(rock,ctx){
         // number of overlapping particles
         let numOverlap = Math.floor(1.5 * rock.radius / waveParams.gap);
 
@@ -96,6 +109,8 @@
         let dy = (particleCollided.yPos + Math.sin(particleCollided.angle)*particleCollided.yPos+canvasHeight/3*2) - rock.yPos;
         if(dy+30 <= rock.radius) //had to add an offset so it doesn't disappear right before the collision
         {
+           
+
             // Calculate how much impulse (i.e. "collision force") to deliver to the point
             // -- Just the momentum of the ball for simplicity
             let impulse = rock.mass * rock.velocity;
@@ -132,6 +147,7 @@
     function map_range(value, low1, high1, low2, high2) {
         return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
     }
+    
     
     window["rwnsLIB"] = {
         updateWaves,
