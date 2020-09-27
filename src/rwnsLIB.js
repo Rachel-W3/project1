@@ -33,7 +33,7 @@
             waveParams.height = waveInSlider.value;
         }
          oscSlider.oninput = function(e){
-            waveParams.oSpeed = oscSlider.value;
+            waveParams.oSpeed = (-1 *(oscSlider.value));
         }
         
         
